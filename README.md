@@ -110,7 +110,7 @@ flowchart TD
     B --> C{LocalStorage ada data?}
     C -- Ya --> D[Load contacts + groups dari LocalStorage]
     C -- Tidak --> E[Inisialisasi data kosong: contacts kosong, groups kosong]
-    D --> F[Render UI (List, Search, Groups, Favorites)]
+    D --> F[Render UI: List, Search, Groups, Favorites]
     E --> F
 
     %% Main Loop
@@ -124,7 +124,7 @@ flowchart TD
 
     %% Add Contact
     G -->|Add Contact| AC1[Form Contact]
-    AC1 --> AC2[Input: Name, Phones, Emails, Addresses (>=1), Notes, Group (optional)]
+    AC1 --> AC2[Input fields: Name, Phones, Emails, Addresses min 1, Notes, Group optional]
     AC2 --> AC3{Validasi}
     AC3 -- Gagal --> AC4[Tampilkan error + kembali ke form]
     AC3 -- OK --> AC5[Generate ID + Simpan ke contacts]
@@ -139,7 +139,7 @@ flowchart TD
     EC3 -- Gagal --> EC4[Tampilkan error]
     EC3 -- OK --> EC5[Update contacts]
     EC5 --> LS2[Update LocalStorage]
-    LS2 --> EC6[Render contact detail/list]
+    LS2 --> EC6[Render contact detail or list]
     EC6 --> F
 
     %% Delete Contact
@@ -152,7 +152,7 @@ flowchart TD
 
     %% Favorite Toggle
     G -->|Toggle Favorite| FV1[Pilih contact]
-    FV1 --> FV2[Set favorite=true/false]
+    FV1 --> FV2[Set favorite true or false]
     FV2 --> LS4[Update LocalStorage]
     LS4 --> FV3[Render Favorites + List]
     FV3 --> F
@@ -167,7 +167,7 @@ flowchart TD
     LS5 --> F
 
     GR1 -->|Assign Contact to Group| GR6[Pilih contact + pilih group]
-    GR6 --> GR7[Set contact.groupId / groupName]
+    GR6 --> GR7[Set contact groupId or groupName]
     GR7 --> LS6[Update LocalStorage]
     LS6 --> F
 

@@ -109,7 +109,7 @@ flowchart TD
     A([Start]) --> B[App Load]
     B --> C{LocalStorage ada data?}
     C -- Ya --> D[Load contacts + groups dari LocalStorage]
-    C -- Tidak --> E[Inisialisasi data kosong: contacts=[], groups=[]]
+    C -- Tidak --> E[Inisialisasi data kosong: contacts kosong, groups kosong]
     D --> F[Render UI (List, Search, Groups, Favorites)]
     E --> F
 
@@ -127,7 +127,7 @@ flowchart TD
     AC1 --> AC2[Input: Name, Phones, Emails, Addresses (>=1), Notes, Group (optional)]
     AC2 --> AC3{Validasi}
     AC3 -- Gagal --> AC4[Tampilkan error + kembali ke form]
-    AC3 -- OK --> AC5[Generate ID + Simpan ke contacts[]]
+    AC3 -- OK --> AC5[Generate ID + Simpan ke contacts]
     AC5 --> LS1[Update LocalStorage]
     LS1 --> AC6[Render list contact]
     AC6 --> F
@@ -137,7 +137,7 @@ flowchart TD
     EC1 --> EC2[Ubah field termasuk multi-address]
     EC2 --> EC3{Validasi}
     EC3 -- Gagal --> EC4[Tampilkan error]
-    EC3 -- OK --> EC5[Update contacts[]]
+    EC3 -- OK --> EC5[Update contacts]
     EC5 --> LS2[Update LocalStorage]
     LS2 --> EC6[Render contact detail/list]
     EC6 --> F
@@ -146,7 +146,7 @@ flowchart TD
     G -->|Delete Contact| DC1[Pilih contact]
     DC1 --> DC2{Konfirmasi hapus?}
     DC2 -- Tidak --> F
-    DC2 -- Ya --> DC3[Hapus dari contacts[]]
+    DC2 -- Ya --> DC3[Hapus dari contacts]
     DC3 --> LS3[Update LocalStorage]
     LS3 --> F
 
@@ -162,7 +162,7 @@ flowchart TD
     GR1 -->|Add Group| GR2[Input nama group]
     GR2 --> GR3{Nama unik?}
     GR3 -- Tidak --> GR4[Error: group sudah ada]
-    GR3 -- Ya --> GR5[Tambah ke groups[]]
+    GR3 -- Ya --> GR5[Tambah ke groups]
     GR5 --> LS5[Update LocalStorage]
     LS5 --> F
 

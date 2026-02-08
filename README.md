@@ -124,7 +124,7 @@ flowchart TD
 
     %% Add Contact
     G -->|Add Contact| AC1[Form Contact]
-    AC1 --> AC2[Input fields: Name, Phones, Emails, Addresses min 1, Notes, Group optional]
+    AC1 --> AC2[Input fields: Name, Phones, Emails optional, Addresses min 1, Notes, Group optional]
     AC2 --> AC3{Validasi}
     AC3 -- Gagal --> AC4[Tampilkan error + kembali ke form]
     AC3 -- OK --> AC5[Generate ID + Simpan ke contacts]

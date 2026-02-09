@@ -11,16 +11,14 @@ A simple **web-based Address Book / Contacts** app (no backend) that stores and 
 - ✅ **Multiple addresses** (one contact can have more than one address)
 - ✅ **Persistent storage via LocalStorage** (data remains after refresh)
 
----
 
 ## Project Structure
-
+```
 /project-root
 ├─ index.html
 ├─ index.css
 └─ index.js
-
----
+```
 
 ## Getting Started
 

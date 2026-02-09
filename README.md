@@ -107,9 +107,9 @@ npx serve .
 ```mermaid
 flowchart TD
     A([Start]) --> B[App Load]
-    B --> C{LocalStorage ada data?}
-    C -- Ya --> D[Load contacts + groups dari LocalStorage]
-    C -- Tidak --> E[Inisialisasi data kosong: contacts kosong, groups kosong]
+    B --> C{Is there data in LocalStorage?}
+    C -- Yes --> D[Load contacts + groups from LocalStorage]
+    C -- No --> E[Initialize empty data: empty contacts, empty groups]
     D --> F[Render UI: List, Search, Groups, Favorites]
     E --> F
 
@@ -117,72 +117,72 @@ flowchart TD
     F --> G{User Action?}
 
     %% Search
-    G -->|Search| S1[Input keyword]
+    G -->|Search| S1[Enter keyword]
     S1 --> S2[Filter contacts by name/phone/email/address/group]
-    S2 --> S3[Render hasil pencarian]
+    S2 --> S3[Render search results]
     S3 --> F
 
     %% Add Contact
-    G -->|Add Contact| AC1[Form Contact]
-    AC1 --> AC2[Input fields: Name, Phones, Emails optional, Addresses min 1, Notes, Group optional]
-    AC2 --> AC3{Validasi}
-    AC3 -- Gagal --> AC4[Tampilkan error + kembali ke form]
-    AC3 -- OK --> AC5[Generate ID + Simpan ke contacts]
+    G -->|Add Contact| AC1[Contact Form]
+    AC1 --> AC2[Fill fields: Name, Phones, optional Emails, at least 1 Address, Notes, optional Group]
+    AC2 --> AC3{Validation}
+    AC3 -- Failed --> AC4[Show error + return to form]
+    AC3 -- OK --> AC5[Generate ID + save to contacts]
     AC5 --> LS1[Update LocalStorage]
-    LS1 --> AC6[Render list contact]
+    LS1 --> AC6[Render contact list]
     AC6 --> F
 
     %% Edit Contact
-    G -->|Edit Contact| EC1[Pilih contact]
-    EC1 --> EC2[Ubah field termasuk multi-address]
-    EC2 --> EC3{Validasi}
-    EC3 -- Gagal --> EC4[Tampilkan error]
+    G -->|Edit Contact| EC1[Select contact]
+    EC1 --> EC2[Edit fields including multiple addresses]
+    EC2 --> EC3{Validation}
+    EC3 -- Failed --> EC4[Show error]
     EC3 -- OK --> EC5[Update contacts]
     EC5 --> LS2[Update LocalStorage]
     LS2 --> EC6[Render contact detail or list]
     EC6 --> F
 
     %% Delete Contact
-    G -->|Delete Contact| DC1[Pilih contact]
-    DC1 --> DC2{Konfirmasi hapus?}
-    DC2 -- Tidak --> F
-    DC2 -- Ya --> DC3[Hapus dari contacts]
+    G -->|Delete Contact| DC1[Select contact]
+    DC1 --> DC2{Confirm delete?}
+    DC2 -- No --> F
+    DC2 -- Yes --> DC3[Remove from contacts]
     DC3 --> LS3[Update LocalStorage]
     LS3 --> F
 
     %% Favorite Toggle
-    G -->|Toggle Favorite| FV1[Pilih contact]
-    FV1 --> FV2[Set favorite true or false]
+    G -->|Toggle Favorite| FV1[Select contact]
+    FV1 --> FV2[Set favorite to true or false]
     FV2 --> LS4[Update LocalStorage]
     LS4 --> FV3[Render Favorites + List]
     FV3 --> F
 
     %% Group Management
-    G -->|Manage Groups| GR1{Action group?}
-    GR1 -->|Add Group| GR2[Input nama group]
-    GR2 --> GR3{Nama unik?}
-    GR3 -- Tidak --> GR4[Error: group sudah ada]
-    GR3 -- Ya --> GR5[Tambah ke groups]
+    G -->|Manage Groups| GR1{Group action?}
+    GR1 -->|Add Group| GR2[Enter group name]
+    GR2 --> GR3{Is the name unique?}
+    GR3 -- No --> GR4[Error: group already exists]
+    GR3 -- Yes --> GR5[Add to groups]
     GR5 --> LS5[Update LocalStorage]
     LS5 --> F
 
-    GR1 -->|Assign Contact to Group| GR6[Pilih contact + pilih group]
+    GR1 -->|Assign Contact to Group| GR6[Select contact + select group]
     GR6 --> GR7[Set contact groupId or groupName]
     GR7 --> LS6[Update LocalStorage]
     LS6 --> F
 
-    GR1 -->|Rename/Delete Group| GR8[Pilih group]
-    GR8 --> GR9{Rename atau Delete?}
-    GR9 -->|Rename| GR10[Update nama group]
+    GR1 -->|Rename/Delete Group| GR8[Select group]
+    GR8 --> GR9{Rename or Delete?}
+    GR9 -->|Rename| GR10[Update group name]
     GR10 --> LS7[Update LocalStorage]
-    GR9 -->|Delete| GR11[Hapus group + unassign dari contacts]
+    GR9 -->|Delete| GR11[Delete group + unassign from contacts]
     GR11 --> LS8[Update LocalStorage]
     LS7 --> F
     LS8 --> F
 
     %% Detail View
-    G -->|View Detail| VD1[Pilih contact]
-    VD1 --> VD2[Tampilkan detail: multi-address, phone, email, group, favorite]
+    G -->|View Detail| VD1[Select contact]
+    VD1 --> VD2[Show details: multiple addresses, phone, email, group, favorite]
     VD2 --> F
 
     %% Exit

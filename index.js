@@ -27,3 +27,16 @@ function add(contacts) {
     });
   }
 }
+
+add([
+    {
+        id: 1,
+        name: "Dimas Aditya Mukhsinin",
+        email: "dimas@aditya.com"
+    },
+    {
+        id: 2,
+        name: "Lazuardy Anugrah",
+        email: "lazuardy@anugrah.com"
+    }
+])

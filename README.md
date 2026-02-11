@@ -50,7 +50,7 @@ npx serve .
 
 ### Favorites
 - Click the favorite button/icon on a contact (toggle ON/OFF)
-- Favorite contacts appear in a Favorites section/tab (if implemented)
+- Favorite contacts appear in a Favorites section/tab
 
 ### Groups
 - Create a new group (group name must be unique)

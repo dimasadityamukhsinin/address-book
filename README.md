@@ -2,6 +2,9 @@
 
 A simple **web-based Address Book / Contacts** app (no backend) that stores and manages contacts directly in the browser using **LocalStorage**.
 
+# Website
+- https://address-book-dimasam.vercel.app/
+
 ## Features
 
 - ✅ **Add / Edit / Delete contacts**
@@ -73,17 +76,17 @@ npx serve .
 
 ```json
 {
-  "id": "c_1700000000000",
-  "name": "John Doe",
+  "id": 1,
+  "name": "Dimas Aditya Mukhsinin",
   "phones": ["+628123456789"],
-  "emails": ["john@example.com"],
+  "emails": ["dimas@aditya.com"],
   "addresses": [
-    "Street A No. 1, Jakarta",
-    "Street B No. 2, Depok"
+    "Street A No. 1, Pekanbaru",
+    "Street B No. 2, Jakarta"
   ],
-  "groupId": "g_1699999999999",
+  "groupId": 1,
   "favorite": true,
-  "notes": "Work friend"
+  "notes": "Work"
 }
 ```
 
@@ -91,7 +94,7 @@ npx serve .
 
 ```json
 {
-  "id": "g_1699999999999",
+  "id": 1,
   "name": "Work"
 }
 ```

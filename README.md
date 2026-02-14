@@ -17,7 +17,7 @@ A simple **web-based Address Book / Contacts** app (no backend) that stores and 
 
 ## Project Structure
 ```
-/project-root
+/address-book
 ├─ assets
 ├─ index.html
 ├─ index.css

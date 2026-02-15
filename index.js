@@ -19,7 +19,7 @@ const formatContact = ({ name, phones, email, addresses }) => {
   return `👤 ${name} | 📞 ${phones.join(", ")} | 📧 ${email} | 📍 ${addresses.join(", ")}`;
 };
 
-const add = (contacts) => {
+const addContact = (contacts) => {
   for (const c of contacts ?? []) {
     const error = validateContact(c);
 
@@ -32,7 +32,7 @@ const add = (contacts) => {
   }
 };
 
-add([
+addContact([
   {
     id: 1,
     name: "Dimas Aditya Mukhsinin",

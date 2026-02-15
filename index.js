@@ -2,6 +2,11 @@ const isBlank = (v) => v === null || String(v).trim() === "";
 
 const isEmptyArray = (a) => !Array.isArray(a) || a.length === 0;
 
+/**
+ * Validate the contacts added.
+ * If there's no errors, return null;
+ * otherwise return the error message.
+ */
 const validateContact = ({ name, email, phones, addresses }) => {
   const missing = [];
   if (isBlank(name)) missing.push("Nama");
@@ -19,7 +24,10 @@ const formatContact = ({ name, phones, email, addresses }) => {
   return `👤 ${name} | 📞 ${phones.join(", ")} | 📧 ${email} | 📍 ${addresses.join(", ")}`;
 };
 
-const addContact = (contacts) => {
+/**
+ * Validate and print the contacts.
+ */
+const printContacts = (contacts) => {
   for (const c of contacts ?? []) {
     const error = validateContact(c);
 
@@ -32,7 +40,7 @@ const addContact = (contacts) => {
   }
 };
 
-addContact([
+printContacts([
   {
     id: 1,
     name: "Dimas Aditya Mukhsinin",

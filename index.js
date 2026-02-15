@@ -33,7 +33,7 @@ const printContacts = (contacts) => {
 
     if (error) {
       console.log(error);
-      break;
+      continue;
     }
 
     console.log(formatContact(c));
@@ -47,6 +47,11 @@ printContacts([
     email: "dimas@aditya.com",
     phones: ["+628123456789"],
     addresses: ["Street A No. 1, Pekanbaru", "Street B No. 2, Jakarta"],
+  },
+  {
+    // this should err
+    id: 3,
+    name: "Ben Nata",
   },
   {
     id: 2,

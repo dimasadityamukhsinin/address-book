@@ -160,4 +160,4 @@ editContact(1, {
 
 // deleteContact(1);
 
-printContacts(loadContacts())
+printContacts(loadContacts());

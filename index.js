@@ -101,7 +101,6 @@ const addContact = (contact) => {
   saveContacts(contacts);
 
   console.log("Add Contact");
-  printContactsFromStorage();
 };
 
 /**
@@ -165,3 +164,5 @@ editContact(1, {
 });
 
 // deleteContact(1);
+
+printContactsFromStorage();

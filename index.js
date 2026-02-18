@@ -131,8 +131,7 @@ const editContact = (id, patch) => {
   contacts[idx] = merged;
   saveContacts(contacts);
 
-  console.log("Edit Contact");
-  printContactsFromStorage();
+  console.log("Edit Contact : ", merged);
 };
 
 /**
@@ -150,7 +149,7 @@ const deleteContact = (id) => {
   saveContacts(contacts);
 
   console.log("Delete Contact");
-  printContactsFromStorage();
+  console.log("Terhapus:", removed);
 };
 
 addContact({

@@ -100,7 +100,7 @@ const addContact = (contact) => {
   contacts.push(newContact);
   saveContacts(contacts);
 
-  console.log("Add Contact");
+  console.log("Add Contact : ", newContact);
 };
 
 /**

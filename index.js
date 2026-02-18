@@ -79,11 +79,6 @@ const nextId = (contacts) => {
 };
 
 /**
- * Print contacts from localStorage.
- */
-const printContactsFromStorage = () => printContacts(loadContacts());
-
-/**
  * Add a contact (validates first), persists to localStorage, and prints.
  */
 const addContact = (contact) => {
@@ -165,4 +160,4 @@ editContact(1, {
 
 // deleteContact(1);
 
-printContactsFromStorage();
+printContacts(loadContacts())

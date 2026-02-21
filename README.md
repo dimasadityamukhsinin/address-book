@@ -21,7 +21,13 @@ A simple **web-based Address Book / Contacts** app (no backend) that stores and 
 ├─ assets
 ├─ index.html
 ├─ index.css
-└─ index.js
+└─ scripts
+   ├─ main.js
+   ├─ contacts.js
+   ├─ groups.js
+   ├─ search.js
+   ├─ storage.js
+   └─ utils.js
 ```
 
 ## Getting Started

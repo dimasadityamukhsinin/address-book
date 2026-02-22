@@ -74,7 +74,7 @@ export const printContacts = (contacts) => {
     const error = validateContact(c);
 
     if (error) {
-      console.log(error);
+      console.error(error);
       continue;
     }
 
@@ -101,7 +101,7 @@ export const addContact = (contact) => {
   const error = validateContact(normalized);
 
   if (error) {
-    console.log(error);
+    console.error(error);
     return;
   }
 
@@ -123,13 +123,13 @@ export const editContact = (id, patch) => {
   const targetId = Number(id);
   if (!Number.isFinite(targetId)) {
     const error = "ID tidak valid";
-    console.log(error);
+    console.error(error);
     return;
   }
   const idx = contacts.findIndex((c) => Number(c?.id) === targetId);
   if (idx === -1) {
     const error = "Contact tidak ditemukan";
-    console.log(error);
+    console.error(error);
     return;
   }
 
@@ -141,7 +141,7 @@ export const editContact = (id, patch) => {
   const normalized = { ...merged, ...normalizeContact(merged), id: merged.id };
   const error = validateContact(normalized);
   if (error) {
-    console.log(error);
+    console.error(error);
     return;
   }
 
@@ -159,13 +159,13 @@ export const setFavorite = (id, isFavorite) => {
   const targetId = Number(id);
   if (!Number.isFinite(targetId)) {
     const error = "ID tidak valid";
-    console.log(error);
+    console.error(error);
     return;
   }
   const idx = contacts.findIndex((c) => Number(c?.id) === targetId);
   if (idx === -1) {
     const error = "Contact tidak ditemukan";
-    console.log(error);
+    console.error(error);
     return;
   }
 
@@ -218,13 +218,13 @@ export const deleteContact = (id) => {
   const targetId = Number(id);
   if (!Number.isFinite(targetId)) {
     const error = "ID tidak valid";
-    console.log(error);
+    console.error(error);
     return;
   }
   const idx = contacts.findIndex((c) => Number(c?.id) === targetId);
   if (idx === -1) {
     const error = "Contact tidak ditemukan";
-    console.log(error);
+    console.error(error);
     return;
   }
 

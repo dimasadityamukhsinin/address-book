@@ -11,6 +11,7 @@ export const isEmptyArray = (a) => !Array.isArray(a) || a.length === 0;
 /**
  * Normalize a group id: number or null.
  */
+// TODO: this function is not specific to group id, use a less misleading names
 export const normalizeGroupId = (v) => {
   const n = Number(v);
   return Number.isFinite(n) ? n : null;

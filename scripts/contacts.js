@@ -32,10 +32,12 @@ export const normalizeContact = ({
  * Validate the contacts added.
  * If there's no errors, return null; otherwise return the error message.
  */
+// TODO: try to make use of the normalize() call inside validate(), instead of calling normalize() multiple times
 export const validateContact = ({ name, email, phones, addresses, groupId, group }) => {
   const normalized = normalizeContact({ name, email, phones, addresses, groupId, group });
   const missing = [];
 
+  // TODO: find a way to make this simpler
   if (isBlank(normalized.name)) missing.push("Nama");
   if (isBlank(normalized.email)) missing.push("Email");
   if (isEmptyArray(normalized.phones)) missing.push("No Telpon");

@@ -1,4 +1,3 @@
-import { isBlank, normalizeString, normalizeStringArray } from "./utils.js";
 import { loadContacts } from "./storage.js";
 import { normalizeContact } from "./contacts.js";
 import { getGroupNameById } from "./groups.js";
@@ -9,17 +8,15 @@ import { getGroupNameById } from "./groups.js";
 export const buildContactSearchText = (contact) => {
   const normalized = normalizeContact(contact);
   const groupName = getGroupNameById(normalized.groupId);
-  const groupsList = normalizeStringArray(contact?.groups);
   const fields = [
     normalized.name,
     normalized.email,
     ...normalized.phones,
     ...normalized.addresses,
     groupName,
-    ...groupsList,
   ];
 
-  return fields.filter((v) => !isBlank(v)).join(" ").toLowerCase();
+  return fields.filter((v) => !(String(v).trim() === "")).join(" ").toLowerCase();
 };
 
 /**
@@ -27,7 +24,7 @@ export const buildContactSearchText = (contact) => {
  */
 export const searchContacts = (keyword) => {
   const contacts = loadContacts();
-  const query = normalizeString(keyword).toLowerCase();
-  if (isBlank(query)) return contacts ?? [];
+  const query = String(keyword ?? "").trim().toLowerCase();
+  if (!query) return contacts ?? [];
   return (contacts ?? []).filter((c) => buildContactSearchText(c).includes(query));
 };

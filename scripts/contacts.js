@@ -1,12 +1,6 @@
-import {
-  isBlank,
-  isEmptyArray,
-  normalizeGroupId,
-  normalizeString,
-  normalizeStringArray,
-} from "./utils.js";
 import { loadContacts, saveContacts } from "./storage.js";
-import { getGroupNameById, groupExists } from "./groups.js";
+import { groupExists } from "./groups.js";
+import { nextId } from "./utils.js";
 
 /**
  * Normalize a contact payload.
@@ -16,95 +10,55 @@ export const normalizeContact = ({
   email,
   phones,
   addresses,
-  groupId,
-  group,
   favorite,
 } = {}) => ({
-  name: normalizeString(name),
-  email: normalizeString(email).toLowerCase(),
-  phones: normalizeStringArray(phones),
-  addresses: normalizeStringArray(addresses),
-  groupId: normalizeGroupId(groupId ?? group?.id),
+  name:  String(name ?? "").trim(),
+  email: String(email ?? "").trim().toLowerCase(),
+  phones: phones.filter((item) => !(String(item ?? "").trim() === "")),
+  addresses: addresses.filter((item) => !(String(item ?? "").trim() === "")),
   favorite: Boolean(favorite),
 });
 
 /**
- * Validate the contacts added.
- * If there's no errors, return null; otherwise return the error message.
+ * Validate the contacts added and return normalized data.
  */
-// TODO: try to make use of the normalize() call inside validate(), instead of calling normalize() multiple times
-export const validateContact = ({ name, email, phones, addresses, groupId, group }) => {
-  const normalized = normalizeContact({ name, email, phones, addresses, groupId, group });
+export const validateContact = (contact) => {
+  const normalized = { ...contact, ...normalizeContact(contact) };
   const missing = [];
 
-  // TODO: find a way to make this simpler
-  if (isBlank(normalized.name)) missing.push("Nama");
-  if (isBlank(normalized.email)) missing.push("Email");
-  if (isEmptyArray(normalized.phones)) missing.push("No Telpon");
-  if (isEmptyArray(normalized.addresses)) missing.push("Alamat");
-  if (normalized.groupId === null) missing.push("Group");
+  if (!normalized.name) missing.push("Nama");
+  if (!normalized.email) missing.push("Email");
+  if (normalized.phones.length === 0) missing.push("No Telpon");
+  if (normalized.addresses.length === 0) missing.push("Alamat");
 
-  if (missing.length > 0) return `${missing.join(", ")} Wajib Diisi!`;
-
-  if (!groupExists(normalized.groupId)) {
-    return "Group tidak ditemukan";
+  if (missing.length > 0) {
+    return {
+      error: `${missing.join(", ")} Wajib Diisi!`,
+      normalized,
+    };
   }
 
-  return null;
-};
-
-/**
- * Format a contact into a printable string.
- */
-export const formatContact = ({ name, phones, email, addresses, groupId, favorite }) => {
-  const groupName = getGroupNameById(groupId);
-  const groupLabel =
-    groupId === null
-      ? "-"
-      : groupName
-        ? `${groupName} (${groupId})`
-        : `ID ${groupId}`;
-  const favLabel = favorite ? "★" : "—";
-  return `👤 ${name} | 📞 ${phones.join(", ")} | 📧 ${email} | 📍 ${addresses.join(", ")} | 🏷️ ${groupLabel} | ⭐ ${favLabel}`;
-};
-
-/**
- * Validate and print the contacts.
- */
-export const printContacts = (contacts) => {
-  for (const c of contacts ?? []) {
-    const error = validateContact(c);
-
-    if (error) {
-      console.error(error);
-      continue;
-    }
-
-    console.log(formatContact(c));
+  if (normalized.groupId !== null && !groupExists(normalized.groupId)) {
+    return {
+      error: "Group tidak ditemukan",
+      normalized
+    };
   }
-};
 
-/**
- * Generate next numeric id based on the max id in the list.
- */
-const nextId = (contacts) => {
-  const maxId = (contacts ?? []).reduce(
-    (m, c) => Math.max(m, Number(c?.id) || 0),
-    0,
-  );
-  return maxId + 1;
+  return {
+    error: null,
+    normalized,
+  };
 };
 
 /**
  * Add a contact (validates first), persists to localStorage, and prints.
  */
 export const addContact = (contact) => {
-  const normalized = { ...contact, ...normalizeContact(contact) };
-  const error = validateContact(normalized);
+  const { error, normalized } = validateContact(contact);
 
   if (error) {
-    console.error(error);
-    return;
+    throw new Error(error);
   }
 
   const contacts = loadContacts();
@@ -112,8 +66,7 @@ export const addContact = (contact) => {
 
   contacts.push(newContact);
   saveContacts(contacts);
-
-  console.log("Add Contact : ", newContact);
+  return newContact;
 };
 
 /**
@@ -123,16 +76,9 @@ export const addContact = (contact) => {
 export const editContact = (id, patch) => {
   const contacts = loadContacts();
   const targetId = Number(id);
-  if (!Number.isFinite(targetId)) {
-    const error = "ID tidak valid";
-    console.error(error);
-    return;
-  }
   const idx = contacts.findIndex((c) => Number(c?.id) === targetId);
   if (idx === -1) {
-    const error = "Contact tidak ditemukan";
-    console.error(error);
-    return;
+    throw new Error("Contact tidak ditemukan");
   }
 
   const merged = {
@@ -140,17 +86,14 @@ export const editContact = (id, patch) => {
     ...patch,
     id: contacts[idx].id,
   };
-  const normalized = { ...merged, ...normalizeContact(merged), id: merged.id };
-  const error = validateContact(normalized);
+  const { error, normalized } = validateContact(merged);
   if (error) {
-    console.error(error);
-    return;
+    throw new Error(error);
   }
 
   contacts[idx] = normalized;
   saveContacts(contacts);
-
-  console.log("Edit Contact : ", merged);
+  return normalized;
 };
 
 /**
@@ -159,27 +102,23 @@ export const editContact = (id, patch) => {
 export const setFavorite = (id, isFavorite) => {
   const contacts = loadContacts();
   const targetId = Number(id);
-  if (!Number.isFinite(targetId)) {
-    const error = "ID tidak valid";
-    console.error(error);
-    return;
-  }
   const idx = contacts.findIndex((c) => Number(c?.id) === targetId);
   if (idx === -1) {
-    const error = "Contact tidak ditemukan";
-    console.error(error);
-    return;
+    throw new Error("Contact tidak ditemukan");
   }
 
   const updated = {
     ...contacts[idx],
     favorite: Boolean(isFavorite),
   };
-  const normalized = { ...updated, ...normalizeContact(updated), id: updated.id };
+  const normalized = {
+    ...updated,
+    ...normalizeContact(updated),
+    id: updated.id,
+  };
   contacts[idx] = normalized;
   saveContacts(contacts);
-
-  console.log("Set Favorite : ", normalized);
+  return normalized;
 };
 
 /**
@@ -188,28 +127,24 @@ export const setFavorite = (id, isFavorite) => {
 export const setContactGroup = (contactId, groupId) => {
   const contacts = loadContacts();
   const targetId = Number(contactId);
-  if (!Number.isFinite(targetId)) {
-    console.log("ID tidak valid");
-    return;
-  }
   const idx = contacts.findIndex((c) => Number(c?.id) === targetId);
   if (idx === -1) {
-    console.log("Contact tidak ditemukan");
-    return;
+    throw new Error("Contact tidak ditemukan");
   }
 
-  const normalizedGroupId = normalizeGroupId(groupId);
-  if (normalizedGroupId !== null && !groupExists(normalizedGroupId)) {
-    console.log("Group tidak ditemukan");
-    return;
+  if (!groupExists(Number(groupId))) {
+    throw new Error("Group tidak ditemukan");
   }
 
-  const updated = { ...contacts[idx], groupId: normalizedGroupId };
-  const normalized = { ...updated, ...normalizeContact(updated), id: updated.id };
+  const updated = { ...contacts[idx], groupId };
+  const normalized = {
+    ...updated,
+    ...normalizeContact(updated),
+    id: updated.id,
+  };
   contacts[idx] = normalized;
   saveContacts(contacts);
-
-  console.log("Set Group : ", normalized);
+  return normalized;
 };
 
 /**
@@ -218,21 +153,12 @@ export const setContactGroup = (contactId, groupId) => {
 export const deleteContact = (id) => {
   const contacts = loadContacts();
   const targetId = Number(id);
-  if (!Number.isFinite(targetId)) {
-    const error = "ID tidak valid";
-    console.error(error);
-    return;
-  }
   const idx = contacts.findIndex((c) => Number(c?.id) === targetId);
   if (idx === -1) {
-    const error = "Contact tidak ditemukan";
-    console.error(error);
-    return;
+    throw new Error("Contact tidak ditemukan");
   }
 
   const [removed] = contacts.splice(idx, 1);
   saveContacts(contacts);
-
-  console.log("Delete Contact");
-  console.log("Terhapus:", removed);
+  return removed;
 };

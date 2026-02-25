@@ -91,8 +91,7 @@ npx serve .
     "Street B No. 2, Jakarta"
   ],
   "groupId": 1,
-  "favorite": true,
-  "notes": "Work"
+  "favorite": true
 }
 ```
 
@@ -107,7 +106,7 @@ npx serve .
 
 ### Validation Rules
 - name, phone is required
-- email are optional (validate format if provided)
+- email are optional
 - addresses must contain at least 1 non-empty entry
 - group names must be unique
 

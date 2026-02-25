@@ -1,31 +1,10 @@
 /**
- * Check whether a value is blank (null/undefined/empty after trim).
+ * Generate next numeric id based on the max id in the list.
  */
-export const isBlank = (v) => v === null || v === undefined || String(v).trim() === "";
-
-/**
- * Check whether a value is an empty array (or not an array at all).
- */
-export const isEmptyArray = (a) => !Array.isArray(a) || a.length === 0;
-
-/**
- * Normalize a group id: number or null.
- */
-// TODO: this function is not specific to group id, use a less misleading names
-export const normalizeGroupId = (v) => {
-  const n = Number(v);
-  return Number.isFinite(n) ? n : null;
+export const nextId = (data) => {
+  const maxId = (data ?? []).reduce(
+    (m, c) => Math.max(m, Number(c?.id) || 0),
+    0,
+  );
+  return maxId + 1;
 };
-
-/**
- * Normalize a single string: trim and coerce to string.
- */
-export const normalizeString = (v) => (v === null || v === undefined ? "" : String(v).trim());
-
-/**
- * Normalize an array of strings: trim, drop blanks, ensure array.
- */
-export const normalizeStringArray = (v) =>
-  Array.isArray(v)
-    ? v.map((item) => normalizeString(item)).filter((item) => !isBlank(item))
-    : [];

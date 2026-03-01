@@ -28,13 +28,16 @@ const createAddressRow = (value = "") => {
 };
 
 /**
- * Toggle required state and remove button visibility based on count.
+ * Toggle remove button visibility based on row count.
  */
 const updateAddressRows = () => {
-  const rows = Array.from(elements.addressesContainer.querySelectorAll("[data-address-row]"));
-  rows.forEach((row, index) => {
+  const rows = Array.from(
+    elements.addressesContainer.querySelectorAll("[data-address-row]"),
+  );
+  rows.forEach((row) => {
     const removeButton = row.querySelector("[data-address-remove]");
-    if (removeButton) removeButton.classList.toggle("hidden", rows.length === 1);
+    if (removeButton)
+      removeButton.classList.toggle("hidden", rows.length === 1);
   });
 };
 
@@ -43,7 +46,8 @@ const updateAddressRows = () => {
  */
 export const setAddressRows = (addresses = []) => {
   elements.addressesContainer.innerHTML = "";
-  const list = Array.isArray(addresses) && addresses.length > 0 ? addresses : [""];
+  const list =
+    Array.isArray(addresses) && addresses.length > 0 ? addresses : [""];
   for (const address of list) {
     elements.addressesContainer.appendChild(createAddressRow(address));
   }
@@ -54,7 +58,9 @@ export const setAddressRows = (addresses = []) => {
  * Read address values from the UI.
  */
 export const getAddressValues = () =>
-  Array.from(elements.addressesContainer?.querySelectorAll("[data-address-input]") ?? [])
+  Array.from(
+    elements.addressesContainer?.querySelectorAll("[data-address-input]") ?? [],
+  )
     .map((input) => input.value.trim())
     .filter(Boolean);
 
@@ -64,12 +70,10 @@ export const getAddressValues = () =>
 export const initAddressInputs = () => {
   setAddressRows([""]);
 
-  if (elements.addAddressButton) {
-    elements.addAddressButton.addEventListener("click", () => {
-      elements.addressesContainer.appendChild(createAddressRow());
-      updateAddressRows();
-    });
-  }
+  elements.addAddressButton.addEventListener("click", () => {
+    elements.addressesContainer.appendChild(createAddressRow());
+    updateAddressRows();
+  });
 
   elements.addressesContainer.addEventListener("click", (event) => {
     const removeButton = event.target.closest("[data-address-remove]");

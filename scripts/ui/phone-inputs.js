@@ -28,13 +28,13 @@ const createPhoneRow = (value = "") => {
 };
 
 /**
- * Toggle required state and remove button visibility based on count.
+ * Toggle remove button visibility based on row count.
  */
 const updatePhoneRows = () => {
   const rows = Array.from(
     elements.phonesContainer.querySelectorAll("[data-phone-row]"),
   );
-  rows.forEach((row, index) => {
+  rows.forEach((row) => {
     const removeButton = row.querySelector("[data-phone-remove]");
     if (removeButton)
       removeButton.classList.toggle("hidden", rows.length === 1);
@@ -69,12 +69,10 @@ export const getPhoneValues = () =>
 export const initPhoneInputs = () => {
   setPhoneRows([""]);
 
-  if (elements.addPhoneButton) {
-    elements.addPhoneButton.addEventListener("click", () => {
-      elements.phonesContainer.appendChild(createPhoneRow());
-      updatePhoneRows();
-    });
-  }
+  elements.addPhoneButton.addEventListener("click", () => {
+    elements.phonesContainer.appendChild(createPhoneRow());
+    updatePhoneRows();
+  });
 
   elements.phonesContainer.addEventListener("click", (event) => {
     const removeButton = event.target.closest("[data-phone-remove]");

@@ -103,9 +103,7 @@ const renderGroups = () => {
     filterState.groupId = "all";
   }
 
-  if (elements.groupCount) {
-    elements.groupCount.textContent = String(groups.length);
-  }
+  elements.groupCount.textContent = String(groups.length);
 
   updateFilterStyles();
 };
@@ -339,17 +337,14 @@ if (elements.groupForm) {
     const name = elements.groupNameInput?.value.trim() ?? "";
     if (!name) return;
 
-    let created = null;
     try {
-      created = addGroup({ name });
+      addGroup({ name });
     } catch (error) {
       window.alert(error?.message ?? "Gagal menambah group");
       return;
     }
 
-    if (elements.groupNameInput) {
-      elements.groupNameInput.value = "";
-    }
+    elements.groupNameInput.value = "";
     renderGroups();
   });
 }

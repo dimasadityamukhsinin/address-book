@@ -45,7 +45,7 @@ export const openContactForm = (contact = null) => {
   elements.groupSelect.value = groupId === null ? "" : String(groupId);
 
   setFormError("");
-  elements.formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  elements.formSection.scrollIntoView({ behavior: "smooth" });
 };
 
 /**

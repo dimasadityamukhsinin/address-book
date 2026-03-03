@@ -11,12 +11,17 @@ export const normalizeContact = ({
   phones,
   addresses,
   favorite,
+  groupId,
 } = {}) => ({
   name:  String(name ?? "").trim(),
   email: String(email ?? "").trim().toLowerCase(),
   phones: phones.filter((item) => !(String(item ?? "").trim() === "")),
   addresses: addresses.filter((item) => !(String(item ?? "").trim() === "")),
   favorite: Boolean(favorite),
+  groupId:
+    groupId === "" || groupId === null || groupId === undefined
+      ? null
+      : Number(groupId),
 });
 
 /**
@@ -132,11 +137,15 @@ export const setContactGroup = (contactId, groupId) => {
     throw new Error("Contact tidak ditemukan");
   }
 
-  if (!groupExists(Number(groupId))) {
+  const normalizedGroupId =
+    groupId === "" || groupId === null || groupId === undefined
+      ? null
+      : Number(groupId);
+  if (normalizedGroupId !== null && !groupExists(normalizedGroupId)) {
     throw new Error("Group tidak ditemukan");
   }
 
-  const updated = { ...contacts[idx], groupId };
+  const updated = { ...contacts[idx], groupId: normalizedGroupId };
   const normalized = {
     ...updated,
     ...normalizeContact(updated),

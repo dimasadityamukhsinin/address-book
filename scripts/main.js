@@ -23,20 +23,6 @@ const filterState = {
 };
 
 /**
- * Ensure at least one group exists for new contacts.
- */
-const ensureDefaultGroup = () => {
-  const groups = loadGroups();
-  if (groups.length === 0) {
-    try {
-      addGroup({ name: "Umum" });
-    } catch {
-      // Ignore default group creation errors on init.
-    }
-  }
-};
-
-/**
  * Render group list, group select options, and group count.
  */
 const renderGroups = () => {
@@ -51,6 +37,10 @@ const renderGroups = () => {
 
   const selected = elements.groupSelect?.value ?? "";
   elements.groupSelect.innerHTML = "";
+  const emptyOption = document.createElement("option");
+  emptyOption.value = "";
+  emptyOption.textContent = "Tanpa Group";
+  elements.groupSelect.appendChild(emptyOption);
   for (const group of groups) {
     const option = document.createElement("option");
     option.value = String(group.id);
@@ -59,6 +49,8 @@ const renderGroups = () => {
   }
   if (selected && groups.some((group) => String(group.id) === selected)) {
     elements.groupSelect.value = selected;
+  } else {
+    elements.groupSelect.value = "";
   }
 
   elements.groupList.innerHTML = "";
@@ -243,7 +235,6 @@ const getContactById = (id) => {
   );
 };
 
-ensureDefaultGroup();
 initContactFormControls();
 renderGroups();
 renderContacts();

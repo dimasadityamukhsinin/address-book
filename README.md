@@ -124,8 +124,7 @@ If you use VS Code:
 
 ### Validation Rules
 
-- name, phone is required
-- email are optional
+- name, email, is required
 - addresses must contain at least 1 non-empty entry
 - phone number must contain at least 1 non-empty entry
 - group names must be unique

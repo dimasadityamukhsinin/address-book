@@ -8,6 +8,7 @@ const createAddressRow = (value = "") => {
   row.className = "flex items-center gap-2";
   row.dataset.addressRow = "true";
 
+  // Input alamat
   const input = document.createElement("input");
   input.type = "text";
   input.placeholder = "Jl. Mawar No. 1, Bandung";
@@ -16,6 +17,7 @@ const createAddressRow = (value = "") => {
   input.className =
     "flex-1 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200";
 
+  // Tombol untuk hapus alamat
   const removeButton = document.createElement("button");
   removeButton.type = "button";
   removeButton.dataset.addressRemove = "true";
@@ -36,6 +38,7 @@ const updateAddressRows = () => {
   );
   rows.forEach((row) => {
     const removeButton = row.querySelector("[data-address-remove]");
+    // Sembunyikan tombol hapus jika hanya tersisa satu baris alamat
     if (removeButton)
       removeButton.classList.toggle("hidden", rows.length === 1);
   });
@@ -46,9 +49,8 @@ const updateAddressRows = () => {
  */
 export const setAddressRows = (addresses = []) => {
   elements.addressesContainer.innerHTML = "";
-  const list =
-    Array.isArray(addresses) && addresses.length > 0 ? addresses : [""];
-  for (const address of list) {
+  // Buat baris alamat
+  for (const address of addresses) {
     elements.addressesContainer.appendChild(createAddressRow(address));
   }
   updateAddressRows();
@@ -71,11 +73,13 @@ export const initAddressInputs = () => {
   setAddressRows([""]);
 
   elements.addAddressButton.addEventListener("click", () => {
+    // Tambah satu baris input alamat baru
     elements.addressesContainer.appendChild(createAddressRow());
     updateAddressRows();
   });
 
   elements.addressesContainer.addEventListener("click", (event) => {
+    // hapus baris alamat saat tombol hapus diklik
     const removeButton = event.target.closest("[data-address-remove]");
     const row = removeButton.closest("[data-address-row]");
     row.remove();

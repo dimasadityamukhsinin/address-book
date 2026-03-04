@@ -17,10 +17,9 @@ export const elements = {
   searchInput: document.querySelector("#search-input"),
   tableBody: document.querySelector("#table-address-book tbody"),
   emptyState: document.querySelector("#empty-state"),
-  contactCount: document.querySelector("#contact-count"),
   groupForm: document.querySelector("#group-form"),
   groupNameInput: document.querySelector("#group-name"),
   groupList: document.querySelector("#group-list"),
   groupCount: document.querySelector("#group-count"),
-  groupSidebar: document.querySelector("#group-sidebar"),
+  filterSidebar: document.querySelector("#group-sidebar"),
 };

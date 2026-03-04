@@ -28,6 +28,7 @@ const filterState = {
 const renderGroups = () => {
   const groups = loadGroups();
   const contacts = loadContacts();
+  // Hitung jumlah kontak per group
   const counts = contacts.reduce((acc, contact) => {
     if (contact?.groupId === null || contact?.groupId === undefined) return acc;
     const key = String(contact.groupId);
@@ -37,6 +38,7 @@ const renderGroups = () => {
 
   const selected = elements.groupSelect?.value ?? "";
   elements.groupSelect.innerHTML = "";
+  // Opsi kosong agar kontak bisa tanpa group
   const emptyOption = document.createElement("option");
   emptyOption.value = "";
   emptyOption.textContent = "Tanpa Group";
@@ -47,6 +49,7 @@ const renderGroups = () => {
     option.textContent = group.name;
     elements.groupSelect.appendChild(option);
   }
+  // Pertahankan pilihan lama jika masih valid, selain itu reset ke kosong
   if (selected && groups.some((group) => String(group.id) === selected)) {
     elements.groupSelect.value = selected;
   } else {
@@ -58,6 +61,7 @@ const renderGroups = () => {
     const item = document.createElement("li");
     item.className = "flex items-center gap-2";
 
+    // Tombol filter untuk menampilkan kontak berdasarkan group tertentu
     const filterButton = document.createElement("button");
     filterButton.type = "button";
     filterButton.dataset.filter = "group";
@@ -74,6 +78,7 @@ const renderGroups = () => {
       "rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-500";
     countBadge.textContent = String(count);
 
+    // Delete group
     const deleteButton = document.createElement("button");
     deleteButton.type = "button";
     deleteButton.dataset.action = "delete-group";
@@ -87,6 +92,7 @@ const renderGroups = () => {
     elements.groupList.appendChild(item);
   }
 
+  // Reset filter group jika group yang dipilih sudah tidak ada
   const groupIds = new Set(groups.map((group) => String(group.id)));
   if (
     filterState.groupId !== "all" &&
@@ -95,6 +101,7 @@ const renderGroups = () => {
     filterState.groupId = "all";
   }
 
+  // Tampilkan jumlah group
   elements.groupCount.textContent = String(groups.length);
 
   updateFilterStyles();
@@ -104,13 +111,17 @@ const renderGroups = () => {
  * Update active styles for filter buttons in the sidebar.
  */
 const updateFilterStyles = () => {
-  if (!elements.groupSidebar) return;
-  const buttons = elements.groupSidebar.querySelectorAll("button[data-filter]");
+  if (!elements.filterSidebar) return;
+  const buttons = elements.filterSidebar.querySelectorAll(
+    "button[data-filter]",
+  );
+  // Update style aktif/non-aktif untuk setiap tombol filter
   for (const button of buttons) {
     const type = button.dataset.filter;
     const isAll = type === "all";
     const isGroup = type === "group";
     const isFavorite = type === "favorite";
+    // Tentukan apakah tombol ini sedang aktif berdasarkan filter
     const matches =
       (isAll && filterState.groupId === "all" && !filterState.favorite) ||
       (isGroup &&
@@ -137,12 +148,14 @@ const renderContacts = () => {
   const baseList = query ? searchContacts(query) : loadContacts();
   let list = baseList;
 
+  // Filter berdasarkan group yang dipilih
   if (filterState.groupId !== "all") {
     list = list.filter(
       (contact) => String(contact?.groupId) === String(filterState.groupId),
     );
   }
 
+  // Filter berdasarkan favorite
   if (filterState.favorite) {
     list = list.filter((contact) => Boolean(contact?.favorite));
   }
@@ -216,11 +229,9 @@ const renderContacts = () => {
     }
   }
 
+  // Tampilkan/sembunyikan empty state sesuai jumlah kontak
   if (elements.emptyState) {
     elements.emptyState.classList.toggle("hidden", (list ?? []).length > 0);
-  }
-  if (elements.contactCount) {
-    elements.contactCount.textContent = String((list ?? []).length);
   }
   updateFilterStyles();
 };
@@ -239,18 +250,21 @@ initContactFormControls();
 renderGroups();
 renderContacts();
 
+// Tombol tambah kontak untuk menampilkan form
 if (elements.addContactButton) {
   elements.addContactButton.addEventListener("click", () => {
     openContactForm();
   });
 }
 
+// Tombol batal untuk menghilangkan form
 if (elements.cancelButton) {
   elements.cancelButton.addEventListener("click", () => {
     closeContactForm();
   });
 }
 
+// Submit form contact
 if (elements.form) {
   elements.form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -274,12 +288,14 @@ if (elements.form) {
   });
 }
 
+// Search
 if (elements.searchInput) {
   elements.searchInput.addEventListener("input", () => {
     renderContacts();
   });
 }
 
+// edit, hapus, dan toggle favorit.
 if (elements.tableBody) {
   elements.tableBody.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-action]");
@@ -322,6 +338,7 @@ if (elements.tableBody) {
   });
 }
 
+// Submit form group
 if (elements.groupForm) {
   elements.groupForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -340,6 +357,7 @@ if (elements.groupForm) {
   });
 }
 
+// filter atau hapus group.
 if (elements.groupList) {
   elements.groupList.addEventListener("click", (event) => {
     const filterButton = event.target.closest("button[data-filter='group']");
@@ -373,8 +391,9 @@ if (elements.groupList) {
   });
 }
 
-if (elements.groupSidebar) {
-  elements.groupSidebar.addEventListener("click", (event) => {
+// Handle Filter all dan favorite
+if (elements.filterSidebar) {
+  elements.filterSidebar.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-filter]");
     if (!button) return;
 

@@ -13,11 +13,14 @@ export const normalizeContact = ({
   favorite,
   groupId,
 } = {}) => ({
-  name:  String(name ?? "").trim(),
-  email: String(email ?? "").trim().toLowerCase(),
+  name: String(name ?? "").trim(),
+  email: String(email ?? "")
+    .trim()
+    .toLowerCase(),
   phones: phones.filter((item) => !(String(item ?? "").trim() === "")),
   addresses: addresses.filter((item) => !(String(item ?? "").trim() === "")),
   favorite: Boolean(favorite),
+  // Group opsional: value kosong dianggap tidak punya group
   groupId:
     groupId === "" || groupId === null || groupId === undefined
       ? null
@@ -43,10 +46,11 @@ export const validateContact = (contact) => {
     };
   }
 
+  // Validasi hanya jika group dipilih.
   if (normalized.groupId !== null && !groupExists(normalized.groupId)) {
     return {
       error: "Group tidak ditemukan",
-      normalized
+      normalized,
     };
   }
 

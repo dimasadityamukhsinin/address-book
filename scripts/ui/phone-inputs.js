@@ -8,6 +8,7 @@ const createPhoneRow = (value = "") => {
   row.className = "flex items-center gap-2";
   row.dataset.phoneRow = "true";
 
+  // Input no telpon
   const input = document.createElement("input");
   input.type = "number";
   input.placeholder = "08xxx";
@@ -16,6 +17,7 @@ const createPhoneRow = (value = "") => {
   input.className =
     "flex-1 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200";
 
+  // Tombol untuk hapus no telpon
   const removeButton = document.createElement("button");
   removeButton.type = "button";
   removeButton.dataset.phoneRemove = "true";
@@ -36,6 +38,7 @@ const updatePhoneRows = () => {
   );
   rows.forEach((row) => {
     const removeButton = row.querySelector("[data-phone-remove]");
+    // Sembunyikan tombol hapus jika hanya tersisa satu baris no telpon
     if (removeButton)
       removeButton.classList.toggle("hidden", rows.length === 1);
   });
@@ -46,8 +49,8 @@ const updatePhoneRows = () => {
  */
 export const setPhoneRows = (phones = []) => {
   elements.phonesContainer.innerHTML = "";
-  const list = Array.isArray(phones) && phones.length > 0 ? phones : [""];
-  for (const phone of list) {
+  // Buat baris no telpon
+  for (const phone of phones) {
     elements.phonesContainer.appendChild(createPhoneRow(phone));
   }
   updatePhoneRows();
@@ -70,11 +73,13 @@ export const initPhoneInputs = () => {
   setPhoneRows([""]);
 
   elements.addPhoneButton.addEventListener("click", () => {
+    // Tambah satu baris input no telpon baru
     elements.phonesContainer.appendChild(createPhoneRow());
     updatePhoneRows();
   });
 
   elements.phonesContainer.addEventListener("click", (event) => {
+    // hapus baris no telpon saat tombol hapus diklik
     const removeButton = event.target.closest("[data-phone-remove]");
     const row = removeButton.closest("[data-phone-row]");
     row.remove();

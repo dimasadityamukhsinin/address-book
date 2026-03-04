@@ -4,7 +4,7 @@ A simple **web-based Address Book / Contacts** app (no backend) that stores and 
 
 # Website
 
-- https://address-book-dimasam.vercel.app/
+- https://address-book.dimasadityamukhsinin.com/
 
 ## Features
 

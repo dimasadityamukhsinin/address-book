@@ -73,7 +73,7 @@ export const initAddressInputs = () => {
   setAddressRows([""]);
 
   elements.addAddressButton.addEventListener("click", () => {
-    // Tambah satu baris input alamat baru
+    // Tambah satu baris input alamat
     elements.addressesContainer.appendChild(createAddressRow());
     updateAddressRows();
   });

@@ -73,7 +73,7 @@ export const initPhoneInputs = () => {
   setPhoneRows([""]);
 
   elements.addPhoneButton.addEventListener("click", () => {
-    // Tambah satu baris input no telpon baru
+    // Tambah satu baris input no telpon
     elements.phonesContainer.appendChild(createPhoneRow());
     updatePhoneRows();
   });

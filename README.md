@@ -1,6 +1,6 @@
 # Address Book / Contacts (LocalStorage)
 
-A simple **web-based Address Book / Contacts** app (no backend) that stores and manages contacts directly in the browser using **LocalStorage**.
+A simple **web-based Address Book / Contacts** app (no backend) that stores and manages contacts directly in the browser using **LocalStorage**. Styling uses **Tailwind CSS**.
 
 # Website
 

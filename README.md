@@ -13,6 +13,7 @@ A simple **web-based Address Book / Contacts** app (no backend) that stores and 
 - ✅ **Favorites** (mark/unmark contacts as favorite)
 - ✅ **Groups** (create groups and assign contacts to groups)
 - ✅ **Multiple addresses** (one contact can have more than one address)
+- ✅ **Multiple phone number** (one contact can have more than one phone number)
 - ✅ **Persistent storage via LocalStorage** (data remains after refresh)
 
 ## Project Structure
